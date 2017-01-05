@@ -1,14 +1,14 @@
 //
-//  NSArray+SJNetworkParams.m
+//  NSArray+HTMINetworkParams.m
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "NSArray+SJNetworkParams.h"
+#import "NSArray+HTMINetworkParams.h"
 
-@implementation NSArray (SJNetworkParams)
+@implementation NSArray (HTMINetworkParams)
 
 - (NSString *)sjUrlParamArrayToString{
     NSMutableString *paramString = [[NSMutableString alloc] init];

@@ -1,22 +1,22 @@
 //
-//  SJCacheObject.m
+//  HTMICacheObject.m
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "SJCacheObject.h"
-#import "SJNetworkConfiguration.h"
+#import "HTMICacheObject.h"
+#import "HTMINetworkConfiguration.h"
 
-@interface SJCacheObject()
+@interface HTMICacheObject()
 
 @property (nonatomic, copy, readwrite) NSData *content;
 @property (nonatomic, copy, readwrite) NSDate *lastUpdateTime;
 
 @end
 
-@implementation SJCacheObject
+@implementation HTMICacheObject
 
 
 - (instancetype)initWithContent:(NSData *)content{
@@ -38,7 +38,7 @@
 
 - (BOOL)isOverdue{
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastUpdateTime];
-    return timeInterval > kSJNCacheOverdueSeconds;
+    return timeInterval > kHTMINCacheOverdueSeconds;
 }
 
 - (void)setContent:(NSData *)content{

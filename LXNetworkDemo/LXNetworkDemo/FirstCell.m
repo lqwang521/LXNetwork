@@ -7,7 +7,7 @@
 //
 
 #import "FirstCell.h"
-#import "SJUIKit.h"
+#import "HTMIUIKit.h"
 #import <Masonry.h>
 #import "FirstModel.h"
 
@@ -121,63 +121,63 @@
 
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
-        _nameLabel = [SJUIKit labelWithTextColor:[UIColor blackColor] numberOfLines:1 text:@"" fontSize:15];
+        _nameLabel = [HTMIUIKit labelWithTextColor:[UIColor blackColor] numberOfLines:1 text:@"" fontSize:15];
     }
     return _nameLabel;
 }
 
 - (UILabel *)contentLabel {
     if (!_contentLabel) {
-        _contentLabel = [SJUIKit labelWithTextColor:[UIColor blackColor] numberOfLines:0 text:@"" fontSize:16];
+        _contentLabel = [HTMIUIKit labelWithTextColor:[UIColor blackColor] numberOfLines:0 text:@"" fontSize:16];
     }
     return _contentLabel;
 }
 
 - (UILabel *)creteTimeLabel {
     if (!_creteTimeLabel) {
-        _creteTimeLabel = [SJUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
+        _creteTimeLabel = [HTMIUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
     }
     return _creteTimeLabel;
 }
 
 - (UILabel *)shareCountLabel {
     if (!_shareCountLabel) {
-        _shareCountLabel = [SJUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
+        _shareCountLabel = [HTMIUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
     }
     return _shareCountLabel;
 }
 
 - (UILabel *)upCountLabel {
     if (!_upCountLabel) {
-        _upCountLabel = [SJUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
+        _upCountLabel = [HTMIUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
     }
     return _upCountLabel;
 }
 
 - (UILabel *)downCountLabel {
     if (!_downCountLabel) {
-        _downCountLabel = [SJUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
+        _downCountLabel = [HTMIUIKit labelWithTextColor:[UIColor lightGrayColor] numberOfLines:1 text:@"" fontSize:13];
     }
     return _downCountLabel;
 }
 
 - (UIImageView *)upImgView {
     if (!_upImgView) {
-        _upImgView = [SJUIKit imageViewWithImage:[UIImage imageNamed:@"up"]];
+        _upImgView = [HTMIUIKit imageViewWithImage:[UIImage imageNamed:@"up"]];
     }
     return _upImgView;
 }
 
 - (UIImageView *)downImgView {
     if (!_downImgView) {
-        _downImgView = [SJUIKit imageViewWithImage:[UIImage imageNamed:@"down"]];
+        _downImgView = [HTMIUIKit imageViewWithImage:[UIImage imageNamed:@"down"]];
     }
     return _downImgView;
 }
 
 - (UIImageView *)shareImgView {
     if (!_shareImgView) {
-        _shareImgView = [SJUIKit imageViewWithImage:[UIImage imageNamed:@"share"]];
+        _shareImgView = [HTMIUIKit imageViewWithImage:[UIImage imageNamed:@"share"]];
     }
     return _shareImgView;
 }

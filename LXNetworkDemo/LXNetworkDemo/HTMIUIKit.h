@@ -1,5 +1,5 @@
 //
-//  SJUIKit.h
+//  HTMIUIKit.h
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SJUIKit : NSObject
+@interface HTMIUIKit : NSObject
 
 #pragma mark --------- UILabel --------
 

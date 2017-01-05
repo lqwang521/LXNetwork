@@ -1,14 +1,14 @@
 //
 //  SecondTestApi.h
-//  SJNetworkDemo
+//  HTMINetworkDemo
 //
-//  Created by sharejoy_SJ on 16-09-05.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-09-05.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
-#import "SJBaseRequest.h"
+#import "HTMIBaseRequest.h"
 
-@interface SecondTestApi : SJBaseRequest <SJBaseRequestDelegate, SJBaseRequestParamDelegate>
+@interface SecondTestApi : HTMIBaseRequest <HTMIBaseRequestDelegate, HTMIBaseRequestParamDelegate>
 
 @property (nonatomic, strong) id dataModel;
 

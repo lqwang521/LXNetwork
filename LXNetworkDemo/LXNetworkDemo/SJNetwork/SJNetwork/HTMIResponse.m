@@ -1,18 +1,18 @@
 //
-//  SJResponse.m
-//  SJProject
+//  HTMIResponse.m
+//  HTMIProject
 //
-//  Created by sharejoy_SJ on 16-10-18.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-10-18.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
-#import "SJResponse.h"
+#import "HTMIResponse.h"
 
 
-@interface SJResponse()
+@interface HTMIResponse()
 
 /** 响应状态 */
-@property (nonatomic, assign, readwrite) SJResponseStatus status;
+@property (nonatomic, assign, readwrite) HTMIResponseStatus status;
 /** 回调json字符串 */
 @property (nonatomic, copy, readwrite) NSString *contentString;
 /** 回调对象, 字典或者数组 */
@@ -36,10 +36,10 @@
 
 @end
 
-@implementation SJResponse
+@implementation HTMIResponse
 
 
-#warning SJResponse 以下三个方法都需要根据自己公司返回格式定制
+#warning HTMIResponse 以下三个方法都需要根据自己公司返回格式定制
 
 #pragma mark - life cycle
 //成功走这里, 这里需要根据公司不同格式定制
@@ -47,7 +47,7 @@
 {
     self = [super init];
     if (self) {
-        self.status = SJResponseStatusSuccess;
+        self.status = HTMIResponseStatusSuccess;
         
         self.requestId = [requestId integerValue];
         self.request = request;
@@ -116,7 +116,7 @@
 {
     self = [super init];
     if (self) {
-        self.status = SJResponseStatusSuccess;
+        self.status = HTMIResponseStatusSuccess;
         
         self.requestId = 0;
         self.request = nil;
@@ -146,19 +146,19 @@
 }
 
 #pragma mark - private methods
-- (SJResponseStatus)responseStatusWithError:(NSError *)error
+- (HTMIResponseStatus)responseStatusWithError:(NSError *)error
 {
     if (error) {
-        SJResponseStatus result = SJResponseStatusNoNetwork;
+        HTMIResponseStatus result = HTMIResponseStatusNoNetwork;
         
         NSLog(@"url : %@\n errorCode: %zd\n errorMessage: %@",self.request.URL ,error.code, error.userInfo[@"NSLocalizedDescription"]);
         // 除了超时以外，所有错误都当成是无网络
         if (error.code == NSURLErrorTimedOut) {
-            result = SJResponseStatusTimeout;
+            result = HTMIResponseStatusTimeout;
         }
         return result;
     } else {
-        return SJResponseStatusSuccess;
+        return HTMIResponseStatusSuccess;
     }
 }
 

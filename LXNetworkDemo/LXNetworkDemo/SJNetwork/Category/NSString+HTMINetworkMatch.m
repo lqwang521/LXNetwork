@@ -1,14 +1,14 @@
 //
-//  NSString+SJNetworkMatch.m
+//  NSString+HTMINetworkMatch.m
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "NSString+SJNetworkMatch.h"
+#import "NSString+HTMINetworkMatch.h"
 
-@implementation NSString (SJNetworkMatch)
+@implementation NSString (HTMINetworkMatch)
 
 - (BOOL)sjMatchWithRegex:(NSString*)regexString
 {

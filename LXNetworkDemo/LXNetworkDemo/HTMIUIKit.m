@@ -1,27 +1,27 @@
 //
-//  SJUIKit.m
+//  HTMIUIKit.m
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "SJUIKit.h"
+#import "HTMIUIKit.h"
 
-@implementation SJUIKit
+@implementation HTMIUIKit
 
 
 #pragma mark --------- Label --------
 
 + (UILabel *)labelTextColor:(UIColor *)textColor
                    fontSize:(CGFloat)size {
-    return [SJUIKit labelWithBackgroundColor:[UIColor clearColor] textColor:textColor textAlignment:NSTextAlignmentLeft numberOfLines:1 text:nil fontSize:size];
+    return [HTMIUIKit labelWithBackgroundColor:[UIColor clearColor] textColor:textColor textAlignment:NSTextAlignmentLeft numberOfLines:1 text:nil fontSize:size];
     
 }
 
 + (UILabel *)labelWithText:(NSString *)text
                   fontSize:(CGFloat)size {
-    return [SJUIKit labelWithBackgroundColor:[UIColor clearColor] textColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft numberOfLines:1 text:text fontSize:size];
+    return [HTMIUIKit labelWithBackgroundColor:[UIColor clearColor] textColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft numberOfLines:1 text:text fontSize:size];
     
 }
 
@@ -29,7 +29,7 @@
                   numberOfLines:(NSInteger)numberOfLines
                            text:(NSString *)text
                        fontSize:(CGFloat)size {
-    return [SJUIKit labelWithBackgroundColor:[UIColor clearColor] textColor:textColor textAlignment:NSTextAlignmentLeft numberOfLines:numberOfLines text:text fontSize:size];
+    return [HTMIUIKit labelWithBackgroundColor:[UIColor clearColor] textColor:textColor textAlignment:NSTextAlignmentLeft numberOfLines:numberOfLines text:text fontSize:size];
     
 }
 
@@ -54,19 +54,19 @@
 
 + (UIImageView *)imageViewWithImage:(UIImage *)image {
     
-    return [SJUIKit imageViewWithContentMode:UIViewContentModeScaleToFill userInteractionEnabled:NO image:image];
+    return [HTMIUIKit imageViewWithContentMode:UIViewContentModeScaleToFill userInteractionEnabled:NO image:image];
 }
 
 + (UIImageView *)imageViewWithImage:(UIImage *)image
              userInteractionEnabled:(BOOL)enabled {
     
-    return [SJUIKit imageViewWithContentMode:UIViewContentModeScaleToFill userInteractionEnabled:enabled image:image];
+    return [HTMIUIKit imageViewWithContentMode:UIViewContentModeScaleToFill userInteractionEnabled:enabled image:image];
 }
 
 + (UIImageView *)imageViewWithContentMode:(UIViewContentMode)mode
                                     image:(UIImage *)image {
     
-    return [SJUIKit imageViewWithContentMode:mode userInteractionEnabled:NO image:image];
+    return [HTMIUIKit imageViewWithContentMode:mode userInteractionEnabled:NO image:image];
 }
 
 + (UIImageView *)imageViewWithContentMode:(UIViewContentMode)mode
@@ -95,7 +95,7 @@
                                   title:(NSString *)title
                                fontSize:(CGFloat)size {
     
-    return [SJUIKit buttonWithBackgroundColor:backgroundColor titleColor:titleColor titleHighlightColor:titleColor title:title fontSize:size];
+    return [HTMIUIKit buttonWithBackgroundColor:backgroundColor titleColor:titleColor titleHighlightColor:titleColor title:title fontSize:size];
 }
 
 + (UIButton *)buttonWithBackgroundColor:(UIColor *)backgroundColor

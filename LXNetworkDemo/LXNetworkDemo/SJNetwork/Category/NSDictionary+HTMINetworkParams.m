@@ -1,15 +1,15 @@
 //
-//  NSDictionary+SJNetworkParams.m
+//  NSDictionary+HTMINetworkParams.m
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "NSDictionary+SJNetworkParams.h"
-#import "NSArray+SJNetworkParams.h"
+#import "NSDictionary+HTMINetworkParams.h"
+#import "NSArray+HTMINetworkParams.h"
 
-@implementation NSDictionary (SJNetworkParams)
+@implementation NSDictionary (HTMINetworkParams)
 
 /** params 转换为NSString */
 - (NSString *)sjUrlParamsToString {

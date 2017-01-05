@@ -1,17 +1,17 @@
 //
-//  SJBaseRequest.m
-//  SJProject
+//  HTMIBaseRequest.m
+//  HTMIProject
 //
-//  Created by sharejoy_SJ on 16-10-18.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-10-18.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
-#import "SJBaseRequest.h"
-#import "SJCache.h"
+#import "HTMIBaseRequest.h"
+#import "HTMICache.h"
 #import <AFNetworking.h>
-#import "SJRequestProxy.h"
+#import "HTMIRequestProxy.h"
 
-#define SJSuppressPerformSelectorLeakWarning(Stuff) \
+#define HTMISuppressPerformSelectorLeakWarning(Stuff) \
 do { \
 _Pragma("clang diagnostic push") \
 _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
@@ -19,33 +19,33 @@ Stuff; \
 _Pragma("clang diagnostic pop") \
 } while (0)
 
-@interface SJBaseRequest ()
+@interface HTMIBaseRequest ()
 
 /** 返回信息 */
-@property (nonatomic, strong, readwrite) SJResponse *response;
+@property (nonatomic, strong, readwrite) HTMIResponse *response;
 @property (nonatomic, copy, readwrite) NSString *responseMessage;
 @property (nonatomic, assign, readwrite) int responseCode;
 /** 状态类型: 默认/成功/返回数据不正确/参数错误/超时/网络故障 */
-@property (nonatomic, assign, readwrite) SJBaseRequestState requestState;
+@property (nonatomic, assign, readwrite) HTMIBaseRequestState requestState;
 /** 请求id(app生命周期内递增) */
 @property (nonatomic, strong) NSMutableArray *requestIdList;
 /** 缓存对象 */
-@property (nonatomic, strong) SJCache *cache;
+@property (nonatomic, strong) HTMICache *cache;
 
 
-@property (nonatomic, copy) SJReuqestCallback successBlock;
-@property (nonatomic, copy) SJReuqestCallback failBlock;
+@property (nonatomic, copy) HTMIReuqestCallback successBlock;
+@property (nonatomic, copy) HTMIReuqestCallback failBlock;
 
 
 @end
 
-@implementation SJBaseRequest
+@implementation HTMIBaseRequest
 
 #pragma mark - --getters and setters
-- (SJCache *)cache
+- (HTMICache *)cache
 {
     if (_cache == nil) {
-        _cache = [SJCache sharedInstance];
+        _cache = [HTMICache sharedInstance];
     }
     return _cache;
 }
@@ -81,10 +81,10 @@ _Pragma("clang diagnostic pop") \
         _paramSource = nil;
         _headerSource = nil;
         _responseMessage = nil;
-        _requestState = SJBaseRequestStateDefault;
+        _requestState = HTMIBaseRequestStateDefault;
         
-        if ([self conformsToProtocol:@protocol(SJBaseRequestDelegate)]) {
-            self.child = (id <SJBaseRequestDelegate>)self;
+        if ([self conformsToProtocol:@protocol(HTMIBaseRequestDelegate)]) {
+            self.child = (id <HTMIBaseRequestDelegate>)self;
         }
     }
     return self;
@@ -97,8 +97,8 @@ _Pragma("clang diagnostic pop") \
 }
 
 #pragma mark - --公有方法
-+ (void)cancelRequestWith:(NSArray<SJBaseRequest *> *)requestArray {
-    for (SJBaseRequest *request in requestArray) {
++ (void)cancelRequestWith:(NSArray<HTMIBaseRequest *> *)requestArray {
+    for (HTMIBaseRequest *request in requestArray) {
         if ([request isKindOfClass:[self class]]) {
             [request cancelAllRequests];
         }
@@ -107,7 +107,7 @@ _Pragma("clang diagnostic pop") \
 
 - (void)cancelAllRequests
 {
-    [[SJRequestProxy sharedInstance] cancelRequestWithRequestIDList:self.requestIdList];
+    [[HTMIRequestProxy sharedInstance] cancelRequestWithRequestIDList:self.requestIdList];
     [self.requestIdList removeAllObjects];
 }
 
@@ -115,7 +115,7 @@ _Pragma("clang diagnostic pop") \
 - (void)cancelRequestWithRequestId:(NSInteger)requestID
 {
     [self removeRequestIdWithRequestID:requestID];
-    [[SJRequestProxy sharedInstance] cancelRequestWithRequestID:@(requestID)];
+    [[HTMIRequestProxy sharedInstance] cancelRequestWithRequestID:@(requestID)];
 }
 
 -(void)deleteCache
@@ -137,12 +137,12 @@ _Pragma("clang diagnostic pop") \
         return requestId;
     
     } else {
-        [self failedOnCallingAPI:nil withErrorType:SJBaseRequestStateParamsError];
+        [self failedOnCallingAPI:nil withErrorType:HTMIBaseRequestStateParamsError];
         return 0;
     }
 }
 
-- (NSInteger)loadDataWithSuccess:(SJReuqestCallback)success fail:(SJReuqestCallback)fail
+- (NSInteger)loadDataWithSuccess:(HTMIReuqestCallback)success fail:(HTMIReuqestCallback)fail
 {
     self.successBlock = success;
     self.failBlock = fail;
@@ -156,7 +156,7 @@ _Pragma("clang diagnostic pop") \
         NSInteger requestId = [self loadDataWithParams:params headers:headers uploads:uploads];
         return requestId;
     } else {
-        [self failedOnCallingAPI:nil withErrorType:SJBaseRequestStateParamsError];
+        [self failedOnCallingAPI:nil withErrorType:HTMIBaseRequestStateParamsError];
         return 0;
     }
     
@@ -183,7 +183,7 @@ _Pragma("clang diagnostic pop") \
         if ([self isCorrectWithParamsData:apiParams]) {    //检查参数正确性
             
             // 先检查一下是否有缓存
-            if (self.child.requestType == SJBaseRequestTypeGet && [self shouldCache] && [self hasCacheWithParams:apiParams]) {  //需要缓存并且有缓存
+            if (self.child.requestType == HTMIBaseRequestTypeGet && [self shouldCache] && [self hasCacheWithParams:apiParams]) {  //需要缓存并且有缓存
                 
                 //在hasCacheWithParams中已发出
                 NSLog(@"%@ : 这次请求用的是缓存", NSStringFromClass([self.child class]) );
@@ -195,15 +195,15 @@ _Pragma("clang diagnostic pop") \
             if ([self isReachable]) {              // 有网络
                 switch (self.child.requestType)    // get/post/upload
                 {
-                    case SJBaseRequestTypeGet:
+                    case HTMIBaseRequestTypeGet:
                     {
-                        requestId = [[SJRequestProxy sharedInstance] callGETWithParams:apiParams url:self.child.requestUrl headers:headers methodName:self.getMethodName success:^(SJResponse *response) {
+                        requestId = [[HTMIRequestProxy sharedInstance] callGETWithParams:apiParams url:self.child.requestUrl headers:headers methodName:self.getMethodName success:^(HTMIResponse *response) {
                             
                             [self successedOnCallingAPI:response];
                             
-                        } fail:^(SJResponse *response) {
+                        } fail:^(HTMIResponse *response) {
                             
-                            [self failedOnCallingAPI:response withErrorType:SJBaseRequestStateNetError];
+                            [self failedOnCallingAPI:response withErrorType:HTMIBaseRequestStateNetError];
                             
                         }];
                         
@@ -212,15 +212,15 @@ _Pragma("clang diagnostic pop") \
                         
                         break;
                         
-                    case SJBaseRequestTypePost:
+                    case HTMIBaseRequestTypePost:
                     {
-                        requestId = [[SJRequestProxy sharedInstance] callPOSTWithParams:apiParams url:self.child.requestUrl headers:headers methodName:self.getMethodName success:^(SJResponse *response) {
+                        requestId = [[HTMIRequestProxy sharedInstance] callPOSTWithParams:apiParams url:self.child.requestUrl headers:headers methodName:self.getMethodName success:^(HTMIResponse *response) {
                             
                             [self successedOnCallingAPI:response];
                             
-                        } fail:^(SJResponse *response) {
+                        } fail:^(HTMIResponse *response) {
                             
-                            [self failedOnCallingAPI:response withErrorType:SJBaseRequestStateNetError];
+                            [self failedOnCallingAPI:response withErrorType:HTMIBaseRequestStateNetError];
                             
                         }];
                         
@@ -228,15 +228,15 @@ _Pragma("clang diagnostic pop") \
                     }
                         break;
                         
-                    case SJBaseRequestTypeUpload:
+                    case HTMIBaseRequestTypeUpload:
                     {
-                        requestId = [[SJRequestProxy sharedInstance] callUPLOADWithParams:apiParams url:self.child.requestUrl headers:headers uploads:uploads methodName:self.getMethodName success:^(SJResponse *response) {
+                        requestId = [[HTMIRequestProxy sharedInstance] callUPLOADWithParams:apiParams url:self.child.requestUrl headers:headers uploads:uploads methodName:self.getMethodName success:^(HTMIResponse *response) {
                             
                             [self successedOnCallingAPI:response];
                             
-                        } fail:^(SJResponse *response) {
+                        } fail:^(HTMIResponse *response) {
                             
-                            [self failedOnCallingAPI:response withErrorType:SJBaseRequestStateNetError];
+                            [self failedOnCallingAPI:response withErrorType:HTMIBaseRequestStateNetError];
                             
                         }];
                         
@@ -249,30 +249,30 @@ _Pragma("clang diagnostic pop") \
                 }
                 
                 NSMutableDictionary *params = [apiParams mutableCopy];
-                params[SJNRequestId] = @(requestId);
+                params[HTMINRequestId] = @(requestId);
                 [self afterCallingAPIWithParams:params];
                 return requestId;
                 
             } else {
-                [self failedOnCallingAPI:nil withErrorType:SJBaseRequestStateNoNetWork];//网络故障,没网
+                [self failedOnCallingAPI:nil withErrorType:HTMIBaseRequestStateNoNetWork];//网络故障,没网
                 return requestId;
             }
         } else {
-            [self failedOnCallingAPI:nil withErrorType:SJBaseRequestStateParamsError];
+            [self failedOnCallingAPI:nil withErrorType:HTMIBaseRequestStateParamsError];
             return requestId;
         }
         
     } else {
-        [self failedOnCallingAPI:nil withErrorType:SJBaseRequestStateParamsError];
+        [self failedOnCallingAPI:nil withErrorType:HTMIBaseRequestStateParamsError];
         return requestId;
     }
 }
 
 
 #pragma mark - API回调执行的方法
-- (void)successedOnCallingAPI:(SJResponse *)response
+- (void)successedOnCallingAPI:(HTMIResponse *)response
 {
-    self.requestState = SJBaseRequestStateSuccess;
+    self.requestState = HTMIBaseRequestStateSuccess;
     self.response = response;
     self.responseCode = response.responseCode;
     self.responseMessage = response.responseMessage;
@@ -281,14 +281,14 @@ _Pragma("clang diagnostic pop") \
     
     if ([self isCorrectWithResponseData:response.content]) {
         
-        if (self.child.requestType == SJBaseRequestTypeGet && [self shouldCache] && !response.isCache) {
+        if (self.child.requestType == HTMIBaseRequestTypeGet && [self shouldCache] && !response.isCache) {
             
             //检查get请求/需要缓存/不是缓存数据  就保存缓存
             [self.cache saveCacheWithData:response.responseData methodName:[self getMethodName] requestParams:response.requestParams];
         }
 //        //token非法处理
 //        if (response.responseCode == 403000) {
-//            [SJNotice postNotificationName:SJLogoutNotification object:nil];
+//            [HTMINotice postNotificationName:HTMILogoutNotification object:nil];
 //            return;
 //        }
         
@@ -313,7 +313,7 @@ _Pragma("clang diagnostic pop") \
         
         [self afterPerformSuccessWithResponse:response];
     } else {
-        [self failedOnCallingAPI:response withErrorType:SJBaseRequestStateContentError];
+        [self failedOnCallingAPI:response withErrorType:HTMIBaseRequestStateContentError];
     }
 }
 
@@ -324,7 +324,7 @@ _Pragma("clang diagnostic pop") \
         if ([self isKindOfClass:NSClassFromString(str)]) {
             SEL sel = NSSelectorFromString([[self.delegate requestSuccessDicWithClassStrAndSELStr] objectForKey:str]);
             if (sel) {
-                SJSuppressPerformSelectorLeakWarning
+                HTMISuppressPerformSelectorLeakWarning
                 (
                  [self.delegate performSelector:sel withObject:self]
                  );
@@ -336,7 +336,7 @@ _Pragma("clang diagnostic pop") \
 
 
 
-- (void)failedOnCallingAPI:(SJResponse *)response withErrorType:(SJBaseRequestState)errorType
+- (void)failedOnCallingAPI:(HTMIResponse *)response withErrorType:(HTMIBaseRequestState)errorType
 {
     self.requestState = errorType;
     self.response = response;
@@ -345,13 +345,13 @@ _Pragma("clang diagnostic pop") \
     
     [self removeRequestIdWithRequestID:response.requestId];
     
-    if (errorType == SJBaseRequestStateNetError) {
-        if (response.status == SJResponseStatusTimeout) {
-            self.requestState = SJBaseRequestStateTimeout;
+    if (errorType == HTMIBaseRequestStateNetError) {
+        if (response.status == HTMIResponseStatusTimeout) {
+            self.requestState = HTMIBaseRequestStateTimeout;
         }
     }
-    if (errorType == SJBaseRequestStateNoNetWork) {
-        self.requestState = SJBaseRequestStateNoNetWork;
+    if (errorType == HTMIBaseRequestStateNoNetWork) {
+        self.requestState = HTMIBaseRequestStateNoNetWork;
     }
     
     [self beforePerformFailWithResponse:response];
@@ -367,42 +367,42 @@ _Pragma("clang diagnostic pop") \
     
     [self afterPerformFailWithResponse:response];
 
-#warning SJBaseRequest 可以在这里实现错误弹窗
+#warning HTMIBaseRequest 可以在这里实现错误弹窗
 //    switch (self.requestState) {
-//        case SJBaseRequestStateNetError:
+//        case HTMIBaseRequestStateNetError:
 //#ifdef DEBUG
-//            [SJHUD showBriefMsg:[NSString stringWithFormat:@"http错误 %@", NSStringFromClass([self class])]];
+//            [HTMIHUD showBriefMsg:[NSString stringWithFormat:@"http错误 %@", NSStringFromClass([self class])]];
 //#else
-//            [SJHUD showBriefMsg:@"http错误"];
+//            [HTMIHUD showBriefMsg:@"http错误"];
 //#endif
 //            break;
 //            
-//        case SJBaseRequestStateContentError:
+//        case HTMIBaseRequestStateContentError:
 //#ifdef DEBUG
-//            [SJHUD showBriefMsg:[NSString stringWithFormat:@"返回数据内容错误 %@", NSStringFromClass([self class])]];
+//            [HTMIHUD showBriefMsg:[NSString stringWithFormat:@"返回数据内容错误 %@", NSStringFromClass([self class])]];
 //#else
-//            [SJHUD showBriefMsg:@"返回数据内容错误"];
+//            [HTMIHUD showBriefMsg:@"返回数据内容错误"];
 //#endif
 //            break;
 //            
-//        case SJBaseRequestStateParamsError:
+//        case HTMIBaseRequestStateParamsError:
 //#ifdef DEBUG
-//            [SJHUD showBriefMsg:[NSString stringWithFormat:@"参数错误 %@", NSStringFromClass([self class])]];
+//            [HTMIHUD showBriefMsg:[NSString stringWithFormat:@"参数错误 %@", NSStringFromClass([self class])]];
 //#else
-//            [SJHUD showBriefMsg:@"参数错误"];
+//            [HTMIHUD showBriefMsg:@"参数错误"];
 //#endif
 //            break;
 //            
-//        case SJBaseRequestStateTimeout:
+//        case HTMIBaseRequestStateTimeout:
 //#ifdef DEBUG
-//            [SJHUD showBriefMsg:[NSString stringWithFormat:@"网络超时 %@", NSStringFromClass([self class])]];
+//            [HTMIHUD showBriefMsg:[NSString stringWithFormat:@"网络超时 %@", NSStringFromClass([self class])]];
 //#else
-//            [SJHUD showBriefMsg:@"网络超时"];
+//            [HTMIHUD showBriefMsg:@"网络超时"];
 //#endif
 //            break;
 //            
-//        case SJBaseRequestStateNoNetWork:
-//            [SJHUD showBriefMsg:@"网络异常, 请检查网络设置"];
+//        case HTMIBaseRequestStateNoNetWork:
+//            [HTMIHUD showBriefMsg:@"网络异常, 请检查网络设置"];
 //            break;
 //            
 //        default:
@@ -431,25 +431,25 @@ _Pragma("clang diagnostic pop") \
 }
 
 /** 接口返回成功，返回控制器回调requestDidSuccess之前的操作 */
-- (void)beforePerformSuccessWithResponse:(SJResponse *)response
+- (void)beforePerformSuccessWithResponse:(HTMIResponse *)response
 {
     
 }
 
 /** 接口返回失败，返回控制器回调requestDidFailed之前的操作 */
-- (void)beforePerformFailWithResponse:(SJResponse *)response
+- (void)beforePerformFailWithResponse:(HTMIResponse *)response
 {
     
 }
 
 /** 接口返回成功，返回控制器回调requestDidSuccess之后的操作 */
-- (void)afterPerformSuccessWithResponse:(SJResponse *)response
+- (void)afterPerformSuccessWithResponse:(HTMIResponse *)response
 {
     
 }
 
 /** 接口返回失败，返回控制器回调requestDidFailed之后的操作 */
-- (void)afterPerformFailWithResponse:(SJResponse *)response
+- (void)afterPerformFailWithResponse:(HTMIResponse *)response
 {
 
 }
@@ -476,8 +476,8 @@ _Pragma("clang diagnostic pop") \
 
 -(NSString*)getMethodName
 {
-#warning SJBaseRequest 实际项目用真是的 token 作为缓存的 key
-    //    NSString *methodName = [NSString stringWithFormat:@"%@_%@_%@",[self convertRequestType:self.child.requestType], SJAPPDelegate.token ? SJAPPDelegate.token : @"token", self.child.requestUrl];
+#warning HTMIBaseRequest 实际项目用真是的 token 作为缓存的 key
+    //    NSString *methodName = [NSString stringWithFormat:@"%@_%@_%@",[self convertRequestType:self.child.requestType], HTMIAPPDelegate.token ? HTMIAPPDelegate.token : @"token", self.child.requestUrl];
     NSString *methodName = [NSString stringWithFormat:@"%@_%@_%@",[self convertRequestType:self.child.requestType], @"token", self.child.requestUrl];
     
     return methodName;
@@ -485,7 +485,7 @@ _Pragma("clang diagnostic pop") \
 
 - (BOOL)shouldCache
 {
-    return kSJNNeedCache;
+    return kHTMINNeedCache;
 }
 
 #pragma mark - --私有方法
@@ -512,7 +512,7 @@ _Pragma("clang diagnostic pop") \
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        SJResponse *response = [[SJResponse alloc] initWithData:result];
+        HTMIResponse *response = [[HTMIResponse alloc] initWithData:result];
         response.requestParams = params;
         [self successedOnCallingAPI:response];
     });
@@ -521,17 +521,17 @@ _Pragma("clang diagnostic pop") \
 
 
 
-- (NSString*)convertRequestType:(SJBaseRequestType)type
+- (NSString*)convertRequestType:(HTMIBaseRequestType)type
 {
     NSString* str;
     switch (type) {
-        case SJBaseRequestTypePost:
+        case HTMIBaseRequestTypePost:
             str = @"POST";
             break;
-        case SJBaseRequestTypeGet:
+        case HTMIBaseRequestTypeGet:
             str = @"GET";
             break;
-        case SJBaseRequestTypeUpload:
+        case HTMIBaseRequestTypeUpload:
             str = @"UPLOAD";
             break;
         default:

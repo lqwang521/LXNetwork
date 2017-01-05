@@ -1,14 +1,14 @@
 //
 //  AppDelegate.m
-//  SJNetworkDemo
+//  HTMINetworkDemo
 //
-//  Created by sharejoy_SJ on 16-09-04.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-09-04.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "SJNetworkConfiguration.h"
-#import "SJCache.h"
+#import "HTMINetworkConfiguration.h"
+#import "HTMICache.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +19,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleInvalidCache:) name:SJDeleteCacheNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleInvalidCache:) name:HTMIDeleteCacheNotification object:nil];
     return YES;
 }
 
@@ -27,9 +27,9 @@
 -(void)handleInvalidCache:(NSNotification*) notify
 {
     NSDictionary* dict = notify.userInfo;
-    NSArray* arr = [dict objectForKey:SJDeleteCacheKey];
+    NSArray* arr = [dict objectForKey:HTMIDeleteCacheKey];
     for (Class cls in arr) {
-        [[SJCache sharedInstance] deleteCacheWithClass:cls];
+        [[HTMICache sharedInstance] deleteCacheWithClass:cls];
     }
 }
 

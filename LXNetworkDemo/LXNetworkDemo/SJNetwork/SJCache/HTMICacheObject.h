@@ -1,5 +1,5 @@
 //
-//  SJCacheObject.h
+//  HTMICacheObject.h
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SJCacheObject : NSObject
+@interface HTMICacheObject : NSObject
 
 //只读属性
 @property (nonatomic, copy, readonly) NSData *content;

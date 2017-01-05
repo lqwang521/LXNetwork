@@ -1,5 +1,5 @@
 //
-//  SJCache.h
+//  HTMICache.h
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SJCache : NSObject
+@interface HTMICache : NSObject
 
 + (instancetype)sharedInstance;
 

@@ -1,34 +1,34 @@
 //
-//  SJCache.m
+//  HTMICache.m
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "SJCache.h"
-#import "SJNetworkConfiguration.h"
-#import "SJCacheObject.h"
-#import "NSDictionary+SJNetworkParams.h"
-#import "NSArray+SJNetworkParams.h"
-#import "NSString+SJNetworkMatch.h"
+#import "HTMICache.h"
+#import "HTMINetworkConfiguration.h"
+#import "HTMICacheObject.h"
+#import "NSDictionary+HTMINetworkParams.h"
+#import "NSArray+HTMINetworkParams.h"
+#import "NSString+HTMINetworkMatch.h"
 
 #import <objc/runtime.h>
 
-@interface SJCache ()
+@interface HTMICache ()
 
 @property (nonatomic, strong) NSCache *cache;
 @property (nonatomic, strong) NSMutableSet* keys;
 
 @end
 
-@implementation SJCache
+@implementation HTMICache
 
 + (instancetype)sharedInstance{
-    static SJCache * instance;
+    static HTMICache * instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[SJCache alloc] init];
+        instance = [[HTMICache alloc] init];
     });
     return instance;
 }
@@ -58,7 +58,7 @@
 - (NSCache *)cache{
     if (nil == _cache) {
         _cache = [[NSCache alloc] init];
-        _cache.countLimit = kSJNCacheCountLimit;
+        _cache.countLimit = kHTMINCacheCountLimit;
     }
     return _cache;
 }
@@ -74,7 +74,7 @@
 #pragma mark - private methods
 
 - (NSData *)fetchCachedDataWithKey:(NSString *)key{
-    SJCacheObject *cachedObject = [self.cache objectForKey:key];
+    HTMICacheObject *cachedObject = [self.cache objectForKey:key];
     //    NSLog(@"fetchCacheKey %@", key);
     //    NSLog(@"fetchCache %@", [self.cache objectForKey:key]);
     if (cachedObject == nil || cachedObject.isOverdue || cachedObject.isEmpty) {
@@ -86,9 +86,9 @@
 
 - (void)saveCacheWithData:(NSData *)cachedData key:(NSString *)key
 {
-    SJCacheObject *cachedObject = [self.cache objectForKey:key];
+    HTMICacheObject *cachedObject = [self.cache objectForKey:key];
     if (cachedObject == nil) {
-        cachedObject = [[SJCacheObject alloc] init];
+        cachedObject = [[HTMICacheObject alloc] init];
     }
     [cachedObject updateContent:cachedData];
     [self.cache setObject:cachedObject forKey:key];

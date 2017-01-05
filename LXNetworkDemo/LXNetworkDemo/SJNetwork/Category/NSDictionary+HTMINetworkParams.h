@@ -1,5 +1,5 @@
 //
-//  NSDictionary+SJNetworkParams.h
+//  NSDictionary+HTMINetworkParams.h
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSDictionary (SJNetworkParams)
+@interface NSDictionary (HTMINetworkParams)
 
 //params 转换为NSString
 - (NSString *)sjUrlParamsToString;

@@ -6,14 +6,14 @@
 //  Copyright © 2016年 shangbin. All rights reserved.
 //
 
-#import "SJHUD.h"
+#import "HTMIHUD.h"
 
-@interface SJHUD () 
+@interface HTMIHUD () 
 
 
 @end
 
-@implementation SJHUD
+@implementation HTMIHUD
 
 + (void)showBriefMsg:(NSString *)message {
     [self showBriefMsg:message toView:nil];
@@ -60,16 +60,16 @@
 
     if (code == 404000) {
 #ifdef DEBUG
-        [SJHUD showBriefMsg:[NSString stringWithFormat:@"404000 测试信息：正式版不会出现\n%@", errMsg]];
+        [HTMIHUD showBriefMsg:[NSString stringWithFormat:@"404000 测试信息：正式版不会出现\n%@", errMsg]];
 #else
         
 #endif
         return;
     }
     if (errMsg && errMsg.length != 0) {
-        [SJHUD showBriefMsg:errMsg];
+        [HTMIHUD showBriefMsg:errMsg];
     }else{
-        [SJHUD showBriefMsg:[NSString stringWithFormat:@"返回码：%zd，请稍后重试", code]];
+        [HTMIHUD showBriefMsg:[NSString stringWithFormat:@"返回码：%zd，请稍后重试", code]];
     }
 }
 

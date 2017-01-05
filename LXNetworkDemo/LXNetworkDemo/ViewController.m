@@ -1,9 +1,9 @@
 //
 //  ViewController.m
-//  SJNetworkDemo
+//  HTMINetworkDemo
 //
-//  Created by sharejoy_SJ on 16-09-04.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-09-04.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -20,16 +20,16 @@
 
 /**
  清除缓存方法
- 1. 在appdelegate中监听SJDeleteCacheNotification通知，处理相关清除代码
+ 1. 在appdelegate中监听HTMIDeleteCacheNotification通知，处理相关清除代码
  
  2. 在适当的时刻及位置发送类似通知
- [SJNotice postNotificationName:SJDeleteCacheNotification object:nil userInfo:@{SJDeleteCacheKey
+ [HTMINotice postNotificationName:HTMIDeleteCacheNotification object:nil userInfo:@{HTMIDeleteCacheKey
  : @[NSClassFromString(@"FirstTestApi"), NSClassFromString(@"SecondTestApi")]}];
  
  */
 
-//遵守回调协议SJBaseRequestCallBackDelegate
-@interface ViewController () <SJBaseRequestCallBackDelegate, UITableViewDelegate, UITableViewDataSource>
+//遵守回调协议HTMIBaseRequestCallBackDelegate
+@interface ViewController () <HTMIBaseRequestCallBackDelegate, UITableViewDelegate, UITableViewDataSource>
 
 //定义接口属性实现懒加载
 @property (nonatomic, strong) FirstTestApi *firstApi;
@@ -86,7 +86,7 @@
 }
 
 - (void)deleCacheBtnClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SJDeleteCacheNotification object:nil userInfo:@{SJDeleteCacheKey
+    [[NSNotificationCenter defaultCenter] postNotificationName:HTMIDeleteCacheNotification object:nil userInfo:@{HTMIDeleteCacheKey
                                                                                    : @[NSClassFromString(@"FirstTestApi")]}];
 }
 
@@ -151,11 +151,11 @@
 }
 
 
-#pragma mark --------- SJBaseRequestCallBackDelegate --------
+#pragma mark --------- HTMIBaseRequestCallBackDelegate --------
 
 
 
-- (void)requestDidSuccess:(SJBaseRequest *)request {
+- (void)requestDidSuccess:(HTMIBaseRequest *)request {
     
     NSLog(@"对应接口实现了requestSuccessDicWithClassStrAndSELStr， 则不用在这个方法里实现，如果本控制器相关接口全部分发出去，则可不写这个方法");
 }
@@ -206,7 +206,7 @@
 }
 
 
-- (void)requestDidFailed:(SJBaseRequest *)request {
+- (void)requestDidFailed:(HTMIBaseRequest *)request {
     NSLog(@"请求失败");
 }
 

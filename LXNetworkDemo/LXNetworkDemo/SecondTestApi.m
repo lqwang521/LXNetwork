@@ -1,9 +1,9 @@
 //
 //  SecondTestApi.m
-//  SJNetworkDemo
+//  HTMINetworkDemo
 //
-//  Created by sharejoy_SJ on 16-09-05.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-09-05.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
 #import "SecondTestApi.h"
@@ -21,8 +21,8 @@
     return self;
 }
 
-- (SJBaseRequestType)requestType {
-    return SJBaseRequestTypeGet;
+- (HTMIBaseRequestType)requestType {
+    return HTMIBaseRequestTypeGet;
 }
 
 - (BOOL)shouldCache {
@@ -33,12 +33,12 @@
     return kRecommend;
 }
 
-- (NSDictionary *)paramsForRequest:(SJBaseRequest *)request {
+- (NSDictionary *)paramsForRequest:(HTMIBaseRequest *)request {
     NSInteger rand = arc4random() % 101;
     return @{@"rand":[NSString stringWithFormat:@"%zd", rand]};
 }
 
-- (void)beforePerformSuccessWithResponse:(SJResponse *)response {
+- (void)beforePerformSuccessWithResponse:(HTMIResponse *)response {
     [super beforePerformSuccessWithResponse:response];
     
     self.dataModel = response.result;

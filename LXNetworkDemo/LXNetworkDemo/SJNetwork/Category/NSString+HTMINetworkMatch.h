@@ -1,5 +1,5 @@
 //
-//  NSArray+SJNetworkParams.h
+//  NSString+HTMINetworkMatch.h
 //  LXProject
 //
 //  Created by sharejoy_lx on 16-10-18.
@@ -8,10 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray (SJNetworkParams)
+@interface NSString (HTMINetworkMatch)
 
-- (NSString *)sjUrlParamArrayToString;
-
-- (NSString *)sjUrlParamToJsonString;
+- (BOOL)sjMatchWithRegex:(NSString*)regexString;
 
 @end

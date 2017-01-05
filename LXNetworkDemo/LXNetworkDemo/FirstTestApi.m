@@ -1,9 +1,9 @@
 //
 //  TestApi.m
-//  SJNetworkDemo
+//  HTMINetworkDemo
 //
-//  Created by sharejoy_SJ on 16-09-04.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-09-04.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
 #import "FirstTestApi.h"
@@ -20,7 +20,7 @@
     
 }
 
-//重写init方法是为了设置获取参数和请求头的代理， SJBaseRequestDelegate不用设置是因为已在父类中设置好， 如果只需要最基本的SJBaseRequestDelegate则不需要重写init
+//重写init方法是为了设置获取参数和请求头的代理， HTMIBaseRequestDelegate不用设置是因为已在父类中设置好， 如果只需要最基本的HTMIBaseRequestDelegate则不需要重写init
 - (instancetype)init
 {
     self = [super init];
@@ -31,8 +31,8 @@
     return self;
 }
 
-- (SJBaseRequestType)requestType {
-    return SJBaseRequestTypeGet;
+- (HTMIBaseRequestType)requestType {
+    return HTMIBaseRequestTypeGet;
 }
 
 //1. 如果是POST请求下面两个方法都不用写
@@ -54,7 +54,7 @@
 }
 
 //伪代码， 本接口不需要header， 演示一下
-- (NSDictionary *)headersForRequest:(SJBaseRequest *)request {
+- (NSDictionary *)headersForRequest:(HTMIBaseRequest *)request {
     
 //    if (app.isLogin) {
 //        return @{@"token":app.token};
@@ -63,7 +63,7 @@
 }
 
 
-- (NSDictionary *)paramsForRequest:(SJBaseRequest *)request {
+- (NSDictionary *)paramsForRequest:(HTMIBaseRequest *)request {
     //假如是上拉刷新，取下一页
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (!self.isLoadNew) {
@@ -82,8 +82,8 @@
     return [mParams copy];
 }
 
-//获取到包装之后的SJResponse类型的返回数据，先处理一下，比如讲数据转成模型，供控制器回调使用
--(void)beforePerformSuccessWithResponse:(SJResponse *)response
+//获取到包装之后的HTMIResponse类型的返回数据，先处理一下，比如讲数据转成模型，供控制器回调使用
+-(void)beforePerformSuccessWithResponse:(HTMIResponse *)response
 {
     [super beforePerformSuccessWithResponse:response];
     if(self.isLoadNew){

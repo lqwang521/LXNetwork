@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD+LX.h"
 
-@interface SJHUD : NSObject
+@interface HTMIHUD : NSObject
 
 /** 短暂显示一条信息 */
 + (void)showBriefMsg:(NSString *)message;

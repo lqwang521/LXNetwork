@@ -1,16 +1,16 @@
 //
-//  SJRequestProxy.m
-//  SJProject
+//  HTMIRequestProxy.m
+//  HTMIProject
 //
-//  Created by sharejoy_SJ on 16-10-18.
-//  Copyright © 2016年 wSJ. All rights reserved.
+//  Created by sharejoy_HTMI on 16-10-18.
+//  Copyright © 2016年 wHTMI. All rights reserved.
 //
 
-#import "SJRequestProxy.h"
-#import "SJNetworkConfiguration.h"
-#import "NSDictionary+SJNetworkParams.h"
+#import "HTMIRequestProxy.h"
+#import "HTMINetworkConfiguration.h"
+#import "NSDictionary+HTMINetworkParams.h"
 
-@interface SJRequestProxy ()
+@interface HTMIRequestProxy ()
 
 @property (nonatomic, strong) NSMutableDictionary *dispatchTable;
 @property (nonatomic, strong) NSNumber *recordedRequestId;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation SJRequestProxy
+@implementation HTMIRequestProxy
 
 #pragma mark - getters and setters
 - (NSMutableDictionary *)dispatchTable
@@ -47,22 +47,22 @@
 + (instancetype)sharedInstance
 {
     static dispatch_once_t onceToken;
-    static SJRequestProxy *sharedInstance = nil;
+    static HTMIRequestProxy *sharedInstance = nil;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[SJRequestProxy alloc] init];
+        sharedInstance = [[HTMIRequestProxy alloc] init];
     });
     return sharedInstance;
 }
 
 #pragma mark - 公有方法
-- (NSInteger)callGETWithParams:(NSDictionary *)params url:(NSString *)url  headers:(NSDictionary*)headers methodName:(NSString *)methodName success:(SJProxyCallback)success fail:(SJProxyCallback)fail
+- (NSInteger)callGETWithParams:(NSDictionary *)params url:(NSString *)url  headers:(NSDictionary*)headers methodName:(NSString *)methodName success:(HTMIProxyCallback)success fail:(HTMIProxyCallback)fail
 {
 #warning 如果有加密需求，可以在这个类里设置公共的一些加密字段及value
 //    headers = [NSDictionary sjHeaderForGETComplementWithHeader:headers];
 //    params = [NSDictionary sjParamsForGETComplementWithParams:params];
     
     self.sessionManager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    self.sessionManager.requestSerializer.timeoutInterval = kSJNCacheOverdueSeconds;
+    self.sessionManager.requestSerializer.timeoutInterval = kHTMINCacheOverdueSeconds;
     
     [self fillHeader:headers];
     
@@ -71,13 +71,13 @@
     return [requestId integerValue];
 }
 
-- (NSInteger)callPOSTWithParams:(NSDictionary *)params url:(NSString *)url headers:(NSDictionary*)headers methodName:(NSString *)methodName success:(SJProxyCallback)success fail:(SJProxyCallback)fail
+- (NSInteger)callPOSTWithParams:(NSDictionary *)params url:(NSString *)url headers:(NSDictionary*)headers methodName:(NSString *)methodName success:(HTMIProxyCallback)success fail:(HTMIProxyCallback)fail
 {
     
 //    headers = [NSDictionary sjHeaderForPOSTComplementWithHeader:headers];
     
     self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
-    self.sessionManager.requestSerializer.timeoutInterval = kSJNCacheOverdueSeconds;
+    self.sessionManager.requestSerializer.timeoutInterval = kHTMINCacheOverdueSeconds;
     
     [self fillHeader:headers];
     
@@ -86,7 +86,7 @@
     return [requestId integerValue];
 }
 
-- (NSInteger)callUPLOADWithParams:(NSDictionary *)params url:(NSString *)url headers:(NSDictionary *)headers uploads:(NSDictionary *)uploads methodName:(NSString *)methodName success:(SJProxyCallback)success fail:(SJProxyCallback)fail
+- (NSInteger)callUPLOADWithParams:(NSDictionary *)params url:(NSString *)url headers:(NSDictionary *)headers uploads:(NSDictionary *)uploads methodName:(NSString *)methodName success:(HTMIProxyCallback)success fail:(HTMIProxyCallback)fail
 {
 //    headers = [NSDictionary sjHeaderForPOSTComplementWithHeader:headers];
     
@@ -124,13 +124,13 @@
 
 #pragma mark - 私有方法
 /** 这个函数存在的意义在于，如果将来要把AFNetworking换掉，只要修改这个函数的实现即可。因为最终调用三方的主要代码都在这个方法里 */
-- (NSNumber *)callApiWithParams:(NSDictionary *)params url:(NSString *)url methodName:(NSString *)methodName requestType:(RequestType)type success:(SJProxyCallback)success fail:(SJProxyCallback)fail upload:(multipart)upload
+- (NSNumber *)callApiWithParams:(NSDictionary *)params url:(NSString *)url methodName:(NSString *)methodName requestType:(RequestType)type success:(HTMIProxyCallback)success fail:(HTMIProxyCallback)fail upload:(multipart)upload
 {
     
     // 之所以不用getter，是因为如果放到getter里面的话，每次调用self.recordedRequestId的时候值就都变了，违背了getter的初衷(配合setter, 值才会变)
     NSNumber *requestId = [self generateRequestId];
     
-    //AFN回调成功的block, 内部会将返回的参数转成SJAPIResponse, 在调用BaseManager中的success:(AXCallback)success的block实现回调(即从BaseManager中传进来一个block, 回调成功把这个block参数一填, 外部就回调了)
+    //AFN回调成功的block, 内部会将返回的参数转成HTMIAPIResponse, 在调用BaseManager中的success:(AXCallback)success的block实现回调(即从BaseManager中传进来一个block, 回调成功把这个block参数一填, 外部就回调了)
     suceesBlock sblk = ^(NSURLSessionDataTask *task, id reponseObject) {
         //假设连续发出请求, recordedRequestId连续增加, 这里的requestId为什么不会用最大的值, 因为block引用的值会引用当时该变量的值, 调用这个方法的时候, 定义了这个block时如果requestId = 2, 即使连续增长至5, 回调的时候requestId依然会是2
         NSURLSessionDataTask *storedTask = self.dispatchTable[requestId];
@@ -143,7 +143,7 @@
         }
         
         
-        SJResponse *response = [[SJResponse alloc] initWithRequestId:requestId request:task.originalRequest params:params reponseObject:reponseObject];
+        HTMIResponse *response = [[HTMIResponse alloc] initWithRequestId:requestId request:task.originalRequest params:params reponseObject:reponseObject];
         
         success ? success(response) : nil;
         
@@ -160,7 +160,7 @@
             [self.dispatchTable removeObjectForKey:requestId];
         }
         
-        SJResponse *response = [[SJResponse alloc] initWithRequestId:requestId request:task.originalRequest params:params error:error];
+        HTMIResponse *response = [[HTMIResponse alloc] initWithRequestId:requestId request:task.originalRequest params:params error:error];
         
         fail?fail(response):nil;
         

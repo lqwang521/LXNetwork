@@ -6,10 +6,10 @@
 //  Copyright © 2016年 wlx. All rights reserved.
 //
 
-#import "SJBaseRequest.h"
+#import "HTMIBaseRequest.h"
 
 //要遵守什么协议取决于这个接口需要如何构造， LXBaseRequestDelegate一定要遵守，用于获取url等基本信息
-@interface FirstTestApi : SJBaseRequest<SJBaseRequestDelegate, SJBaseRequestParamDelegate, SJBaseRequestHeaderDelegate>
+@interface FirstTestApi : HTMIBaseRequest<HTMIBaseRequestDelegate, HTMIBaseRequestParamDelegate, HTMIBaseRequestHeaderDelegate>
 
 
 
